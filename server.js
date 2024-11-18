@@ -20,8 +20,8 @@ connectDB();
 
 const corsOptions = {
     // origin: process.env.ALLOWED_CLIENTS,
-    // origin: process.env.ALLOWED_CLIENTS.split(","),
-    origin: process.env.ALLOWED_CLIENTS,
+    origin: process.env.ALLOWED_CLIENTS.split(","),
+    // origin: process.env.ALLOWED_CLIENTS,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
