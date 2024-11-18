@@ -24,6 +24,8 @@ const upload = multer({
 }).single('myfile');
 
 router.post('/', (req, res) => {
+    console.log(req?.file);
+
     // store file
     upload(req, res, async (err) => {
         // validate file
