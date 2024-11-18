@@ -1,3 +1,4 @@
+require('dotenv').config();
 const nodeMailer = require("nodemailer");
 
 module.exports = async ({ from, to, subject, text, html }) => {

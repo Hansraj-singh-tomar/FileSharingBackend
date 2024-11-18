@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const app = express();
@@ -18,16 +19,14 @@ connectDB();
 
 
 const corsOptions = {
-    origin: process.env.ALLOWED_CLIENTS,
+    // origin: process.env.ALLOWED_CLIENTS,
+    origin: process.env.ALLOWED_CLIENTS.split(","),
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
 }
 
 app.use(cors(corsOptions));
-
-// Handling preflight (OPTIONS) requests
-app.options('*', cors(corsOptions));  // This line is for handling OPTIONS preflight requests
 
 app.use(express.json());
 
@@ -47,3 +46,10 @@ app.use('/files/download', require('./routes/download'));
 app.listen(PORT, () => {
     console.log(`Example app listening on port ${PORT}`);
 });
+
+
+// http://localhost:3000/api/files
+// http://localhost:3000/api/send
+// http://localhost:5000/files/9ecb82d2-4f62-457e-86ac-8804fabc5d0b
+// http://localhost:5000/files/download/9ecb82d2-4f62-457e-86ac-8804fabc5d0b
+
