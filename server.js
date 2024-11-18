@@ -18,11 +18,16 @@ connectDB();
 
 
 const corsOptions = {
-    origin: process.env.ALLOWED_CLIENTS
+    origin: process.env.ALLOWED_CLIENTS,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
 }
 
 app.use(cors(corsOptions));
 
+// Handling preflight (OPTIONS) requests
+app.options('*', cors(corsOptions));  // This line is for handling OPTIONS preflight requests
 
 app.use(express.json());
 
@@ -33,9 +38,6 @@ app.use(express.static('public'));
 app.set('views', path.join(__dirname, '/views'));
 app.set('view engine', 'ejs');
 
-app.get("/", (req, res) => {
-    res.json({ "ok": "all good" })
-})
 
 // routes
 app.use('/api/files', require('./routes/files'));
