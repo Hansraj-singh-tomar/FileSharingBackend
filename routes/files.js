@@ -24,7 +24,7 @@ const storage = multer.diskStorage({
 // }).single('myfile');
 
 // from chat gpt
-const upload = multer({ dest: '/temp' }).single('myfile');
+const upload = multer({ dest: '/tmp' }).single('myfile');
 
 router.post('/', (req, res) => {
     console.log(req?.file);
