@@ -29,9 +29,9 @@ router.post('/', (req, res) => {
     // store file
     upload(req, res, async (err) => {
         // validate file
-        if (!req.file) {
-            return res.status(400).json({ error: 'Please upload a file' });
-        }
+        // if (!req.file) {
+        //     return res.status(400).json({ error: 'Please upload a file' });
+        // }
         if (err) {
             console.log(err);
             return res.status(500).json({ error: err.message });
@@ -43,14 +43,15 @@ router.post('/', (req, res) => {
             path: req.file.path,
             size: req.file.size,
         });
-        await file.save()
-            .then((file) => {
-                res.json({ file: `${process.env.BASE_URL}/files/${file.uuid}` });
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-
+        // await file.save()
+        //     .then((file) => {
+        //         res.json({ file: `${process.env.BASE_URL}/files/${file.uuid}` });
+        //     })
+        //     .catch((err) => {
+        //         console.log(err);
+        //     });
+        const response = await file.save();
+        res.json({ file: `${process.env.BASE_URL}/files/${response.uuid}` })
     });
 });
 
