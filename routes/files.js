@@ -18,10 +18,13 @@ const storage = multer.diskStorage({
     },
 });
 
-const upload = multer({
-    storage,
-    limits: { fileSize: 1000000 * 100 }, // 100MB
-}).single('myfile');
+// const upload = multer({
+//     storage,
+//     limits: { fileSize: 1000000 * 100 }, // 100MB
+// }).single('myfile');
+
+// from chat gpt
+const upload = multer({ dest: '/temp' }).single('myfile');
 
 router.post('/', (req, res) => {
     console.log(req?.file);
@@ -29,12 +32,11 @@ router.post('/', (req, res) => {
     // store file
     upload(req, res, async (err) => {
         // validate file
-        // if (!req.file) {
-        //     return res.status(400).json({ error: 'Please upload a file' });
-        // }
+        if (!req.file) {
+            return res.status(400).json({ error: 'Please upload a file' });
+        }
         if (err) {
-            console.log(err);
-            return res.status(500).json({ error: err.message });
+            return res.status(500).json({ error: err });
         }
         // store file in db
         const file = new File({
@@ -43,15 +45,13 @@ router.post('/', (req, res) => {
             path: req.file.path,
             size: req.file.size,
         });
-        // await file.save()
-        //     .then((file) => {
-        //         res.json({ file: `${process.env.BASE_URL}/files/${file.uuid}` });
-        //     })
-        //     .catch((err) => {
-        //         console.log(err);
-        //     });
-        const response = await file.save();
-        res.json({ file: `${process.env.BASE_URL}/files/${response.uuid}` })
+        await file.save()
+            .then((file) => {
+                res.json({ file: `${process.env.BASE_URL}/files/${file.uuid}` });
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     });
 });
 
