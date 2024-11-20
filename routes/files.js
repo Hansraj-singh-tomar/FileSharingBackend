@@ -60,11 +60,9 @@ router.post('/', (req, res) => {
 })
 
 router.post('/send', async (req, res) => {
-    console.log("first log for the send email");
 
     const { uuid, emailTo, emailFrom } = req.body;
 
-    console.log(emailTo, emailFrom);
 
     if (!uuid || !emailTo || !emailFrom) {
         return res.status(422).json({ error: 'All fields are required except expiry time' });
@@ -73,7 +71,6 @@ router.post('/send', async (req, res) => {
     // Get data from DB
     try {
         const file = await File.findOne({ uuid: uuid });
-        console.log("db data", file);
 
         if (!file) {
             return res.status(422).json({ error: 'File not found' });
@@ -87,8 +84,6 @@ router.post('/send', async (req, res) => {
         file.receiver = emailTo;
 
         const response = await file.save();
-
-        console.log("start sendMail function");
 
         // send mail
         const sendMail = require('../services/mailService');
