@@ -57,7 +57,7 @@ router.post('/', (req, res) => {
             await file.save();
 
             res.json({ url: `${process.env.BASE_URL}/files/${file.uuid}` });
-        }).end(req.file.buffer); // Send the file buffer directly
+        });
         console.log("cloudinart end");
 
     });
