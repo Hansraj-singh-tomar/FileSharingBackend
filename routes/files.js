@@ -88,6 +88,8 @@ router.post('/send', async (req, res) => {
 
         const response = await file.save();
 
+        console.log("start sendMail function");
+
         // send mail
         const sendMail = require('../services/mailService');
         sendMail({
@@ -102,12 +104,15 @@ router.post('/send', async (req, res) => {
                 expires: '24 hours'
             })
         }).then(() => {
+            console.log("send mail success part");
             return res.json({ success: true });
         }).catch((error) => {
-            return res.status(500).json({ error: 'Something went wrong, sending mail' });
+            console.log("send mail error part");
+            return res.status(500).json({ 'Something went wrong, sending mail': error });
         });
     } catch (error) {
-        return res.status(500).json({ error: 'Something went wrong, catch part' });
+        console.log("send mail catch part");
+        return res.status(500).json({ 'Something went wrong, catch part': error });
     }
 })
 
