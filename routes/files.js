@@ -75,6 +75,10 @@ router.post('/send', async (req, res) => {
         const file = await File.findOne({ uuid: uuid });
         console.log("db data", file);
 
+        if (!file) {
+            return res.status(422).json({ error: 'File not found' });
+        }
+
         if (file.sender) {
             return res.status(422).json({ error: 'Something went wrong, sender already exist' });
         }
