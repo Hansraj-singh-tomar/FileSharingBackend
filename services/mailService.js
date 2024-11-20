@@ -3,7 +3,6 @@ const { response } = require('express');
 const nodeMailer = require("nodemailer");
 
 module.exports = async ({ from, to, subject, text, html }) => {
-    console.log(from, to, html);
 
     let transporter = nodeMailer.createTransport({
         host: process.env.SMTP_HOST,
@@ -24,7 +23,7 @@ module.exports = async ({ from, to, subject, text, html }) => {
         html: html,
     }, (error, emailResponse) => {
         if (error) throw error
-        console.log("success!");
+        console.log(emailResponse);
         response.end();
     });
 }

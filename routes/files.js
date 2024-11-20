@@ -77,7 +77,7 @@ router.post('/send', async (req, res) => {
         }
 
         if (file.sender) {
-            return res.status(422).json({ error: 'Something went wrong, sender already exist' });
+            return res.status(422).json({ error: 'sender already exist' });
         }
 
         file.sender = emailFrom;
