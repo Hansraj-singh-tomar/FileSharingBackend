@@ -7,24 +7,6 @@
         }
     ],
     "routes": [
-        { "src": "/(.*)", "dest": "server.js" },
-        { "src": "/api/.*", "dest": "server.js" },
-        { "src": "/files/.*", "dest": "server.js" },
-        {
-            "src": "/api/files",
-            "dest": "server.js"
-        },
-        {
-            "src": "/api/send",
-            "dest": "server.js"
-        },
-        {
-            "src": "/files/(.*)",
-            "dest": "server.js"
-        },
-        {
-            "src": "/files/download/(.*)",
-            "dest": "server.js"
-        }
+        { "src": "/(.*)", "dest": "server.js" }
     ]
 }

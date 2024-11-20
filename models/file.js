@@ -6,7 +6,7 @@ const fileSchema = new Schema({
         type: String,
         required: true
     },
-    path: {
+    url: {
         type: String,
         required: true
     },
@@ -26,6 +26,14 @@ const fileSchema = new Schema({
         type: String,
         required: false
     },
+    expirationTime: {
+        type: Number,
+        required: false
+    },
+    publicId: {
+        type: String,
+        required: false
+    }
 }, {
     timestamps: true
 });

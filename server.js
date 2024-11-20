@@ -9,19 +9,10 @@ const PORT = process.env.PORT || 3000;
 const connectDB = require('./config/db');
 connectDB();
 
-// Cors
-// app.use(cors({
-//     origin: process.env.ALLOWED_CLIENTS, // specify the allowed origin
-//     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // specify allowed methods
-//     allowedHeaders: ['Content-Type', 'Authorization'], // specify allowed headers
-//     credentials: true, // if you need to send cookies or authentication headers
-// }));
-
-
+// Cors Configuration
 const corsOptions = {
     // origin: process.env.ALLOWED_CLIENTS,
     origin: process.env.ALLOWED_CLIENTS.split(","),
-    // origin: process.env.ALLOWED_CLIENTS,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
@@ -54,3 +45,21 @@ app.listen(PORT, () => {
 // http://localhost:5000/files/9ecb82d2-4f62-457e-86ac-8804fabc5d0b
 // http://localhost:5000/files/download/9ecb82d2-4f62-457e-86ac-8804fabc5d0b
 
+// { "src": "/api/.*", "dest": "server.js" },
+// { "src": "/files/.*", "dest": "server.js" },
+// {
+//     "src": "/api/files",
+//         "dest": "server.js"
+// },
+// {
+//     "src": "/api/send",
+//         "dest": "server.js"
+// },
+// {
+//     "src": "/files/(.*)",
+//         "dest": "server.js"
+// },
+// {
+//     "src": "/files/download/(.*)",
+//         "dest": "server.js"
+// }
