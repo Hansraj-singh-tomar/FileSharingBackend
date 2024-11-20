@@ -1,3 +1,6 @@
+//  When deploying a project to Vercel, you need to understand that Vercel is optimized for serverless functions, 
+// which means it doesn’t support long - running processes like node - cron.Scripts like the one you’ve written won’t run automatically on Vercel because Vercel doesn't keep your backend continuously running.
+
 const cron = require('node-cron');
 const cloudinary = require('cloudinary').v2;
 const File = require('./models/file'); // Your file model to access DB

@@ -17,66 +17,21 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-// const storage = multer.diskStorage({
-//     destination: function (req, file, cb) {
-//         cb(null, 'uploads/');
-//     },
-//     filename: function (req, file, cb) {
-//         const uniqueName = `${Date.now()}-${Math.round(Math.random() * 1E9)}${path.extname(file.originalname)}`;
-//         cb(null, uniqueName);
-//     },
-// });
-// const upload = multer({
-//     storage,
-//     limits: { fileSize: 1000000 * 100 }, // 100MB
-// }).single('myfile');
-
-// from chat gpt - ye vercel ke tmp me file ko save karega for the time period
-// const upload = multer({ dest: '/tmp' }).single('myfile');
-
-// Multer with local storage
-// router.post('/', (req, res) => {
-//     // store file
-//     upload(req, res, async (err) => {
-//         // validate file
-//         if (!req.file) {
-//             return res.status(400).json({ error: 'Please upload a file' });
-//         }
-//         if (err) {
-//             return res.status(500).json({ error: err });
-//         }
-//         // store file in db
-//         const file = new File({
-//             fileName: req.file.filename,
-//             uuid: uuidv4(),
-//             path: req.file.path,
-//             size: req.file.size,
-//         });
-//         await file.save()
-//             .then((file) => {
-//                 res.json({ file: `${process.env.BASE_URL}/files/${file.uuid}` });
-//             })
-//             .catch((err) => {
-//                 console.log(err);
-//             });
-//     });
-// });
-
 // Set up multer to handle file uploads in vercel server memory(RAM)
 // If file size is small than it's good
-// const upload = multer({ storage: multer.memoryStorage() }).single('myfile');
+const upload = multer({ storage: multer.memoryStorage() }).single('myfile');
 
 // Store the file temporarily on disk in a directory like / tmp(which is a temporary file storage provided by Vercel for each request).
 // Vercel discards all memory used during execution
-const upload = multer({ dest: '/tmp' }).single('myfile');
+// const upload = multer({ dest: '/tmp' }).single('myfile');
 
 // Using cloudinary
 router.post('/', (req, res) => {
 
     upload(req, res, (err) => {
-        // console.log("multer  file data", req.file);
+        console.log("multer file data", req.file);
 
-        if (err) return res.status(500).json({ error: err.message });
+        if (err) return res.status(500).json({ "error while uploading": err.message });
 
         if (!req.file) return res.status(400).json({ error: 'Please upload a file' });
 
@@ -148,3 +103,49 @@ router.post('/send', async (req, res) => {
 module.exports = router;
 
 
+// Notes -
+
+// const storage = multer.diskStorage({
+//     destination: function (req, file, cb) {
+//         cb(null, 'uploads/');
+//     },
+//     filename: function (req, file, cb) {
+//         const uniqueName = `${Date.now()}-${Math.round(Math.random() * 1E9)}${path.extname(file.originalname)}`;
+//         cb(null, uniqueName);
+//     },
+// });
+// const upload = multer({
+//     storage,
+//     limits: { fileSize: 1000000 * 100 }, // 100MB
+// }).single('myfile');
+
+// from chat gpt - ye vercel ke tmp me file ko save karega for the time period
+// const upload = multer({ dest: '/tmp' }).single('myfile');
+
+// Multer with local storage
+// router.post('/', (req, res) => {
+//     // store file
+//     upload(req, res, async (err) => {
+//         // validate file
+//         if (!req.file) {
+//             return res.status(400).json({ error: 'Please upload a file' });
+//         }
+//         if (err) {
+//             return res.status(500).json({ error: err });
+//         }
+//         // store file in db
+//         const file = new File({
+//             fileName: req.file.filename,
+//             uuid: uuidv4(),
+//             path: req.file.path,
+//             size: req.file.size,
+//         });
+//         await file.save()
+//             .then((file) => {
+//                 res.json({ file: `${process.env.BASE_URL}/files/${file.uuid}` });
+//             })
+//             .catch((err) => {
+//                 console.log(err);
+//             });
+//     });
+// });
