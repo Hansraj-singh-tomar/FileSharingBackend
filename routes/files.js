@@ -27,7 +27,6 @@ const upload = multer({ storage: multer.memoryStorage() }).single('myfile');
 
 // Using cloudinary
 router.post('/', (req, res) => {
-    console.log("is this thing working or not");
 
     upload(req, res, (err) => {
         console.log("multer file data", req.file);
