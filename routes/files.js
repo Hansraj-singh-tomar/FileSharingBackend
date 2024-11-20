@@ -29,7 +29,6 @@ const upload = multer({ dest: '/tmp' }).single('myfile');
 router.post('/', (req, res) => {
 
     upload(req, res, (err) => {
-        console.log("multer file data", req.file);
 
         if (err) return res.status(500).json({ "error while uploading": err.message });
 
@@ -37,7 +36,6 @@ router.post('/', (req, res) => {
 
         const fileName = `${Date.now()}-${Math.round(Math.random() * 1E9)}${path.extname(req?.file?.originalname)}`;
 
-        console.log("cloudinary start");
         // Upload to Cloudinary
         cloudinary.uploader.upload(req.file.path, { resource_type: 'auto' }, async (error, result) => {
             if (error) return res.status(500).json({ "error from cloudinary": error.message });
@@ -58,13 +56,15 @@ router.post('/', (req, res) => {
 
             res.json({ url: `${process.env.BASE_URL}/files/${file.uuid}` });
         });
-        console.log("cloudinart end");
-
     });
 })
 
 router.post('/send', async (req, res) => {
+    console.log("first log for the send email");
+
     const { uuid, emailTo, emailFrom } = req.body;
+
+    console.log(emailTo, emailFrom);
 
     if (!uuid || !emailTo || !emailFrom) {
         return res.status(422).json({ error: 'All fields are required except expiry time' });
@@ -72,12 +72,16 @@ router.post('/send', async (req, res) => {
 
     // Get data from DB
     try {
-        const file = await File.findOne({ uuid: uuid });;
+        const file = await File.findOne({ uuid: uuid });
+        console.log("db data", file);
+
         if (file.sender) {
             return res.status(422).json({ error: 'Something went wrong, sender already exist' });
         }
+
         file.sender = emailFrom;
         file.receiver = emailTo;
+
         const response = await file.save();
 
         // send mail
