@@ -19,11 +19,11 @@ cloudinary.config({
 
 // Set up multer to handle file uploads in vercel server memory(RAM)
 // If file size is small than it's good
-// const upload = multer({ storage: multer.memoryStorage() }).single('myfile');
+const upload = multer({ storage: multer.memoryStorage() }).single('myfile');
 
 // Store the file temporarily on disk in a directory like / tmp(which is a temporary file storage provided by Vercel for each request).
 // Vercel discards all memory used during execution
-const upload = multer({ dest: '/tmp' }).single('myfile');
+// const upload = multer({ dest: '/tmp' }).single('myfile');
 
 // Using cloudinary
 router.post('/', (req, res) => {
@@ -38,6 +38,7 @@ router.post('/', (req, res) => {
 
         const fileName = `${Date.now()}-${Math.round(Math.random() * 1E9)}${path.extname(req?.file?.originalname)}`;
 
+        console.log("cloudinary start");
         // Upload to Cloudinary
         cloudinary.uploader.upload_stream({ resource_type: 'auto' }, async (error, result) => {
             if (error) return res.status(500).json({ "error from cloudinary": error.message });
@@ -58,6 +59,8 @@ router.post('/', (req, res) => {
 
             res.json({ url: `${process.env.BASE_URL}/files/${file.uuid}` });
         }).end(req.file.buffer); // Send the file buffer directly
+        console.log("cloudinart end");
+
     });
 })
 
